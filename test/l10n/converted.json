@@ -1,0 +1,10 @@
+{
+    "ru": {
+        "head.title": "Заголовок",
+        "body.foot.about": "Что это?"
+    },
+    "en": {
+        "head.title": "Title",
+        "body.foot.about": "WAT?"
+    }
+}

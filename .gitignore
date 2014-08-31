@@ -1,0 +1,4 @@
+node_modules
+lib/qunit
+lib/log4js
+lib/.bin

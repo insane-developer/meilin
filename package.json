@@ -1,0 +1,19 @@
+{
+  "name": "meilin",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "meilin-l10n": "0.0.0",
+    "meilin-resolve-config": "0.0.0",
+    "qunit": "~0.7.2"
+  },
+  "devDependencies": {
+    "log4js": "0.6.19"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "BSD-2-Clause"
+}

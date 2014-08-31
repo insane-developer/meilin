@@ -1,0 +1,6 @@
+{
+    "l10n": {
+        "langs": ["ru", "en"],
+        "path": "./translations.json"
+    }
+}

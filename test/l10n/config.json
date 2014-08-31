@@ -1,0 +1,7 @@
+{
+    "l10n": {
+        "langs": ["ru", "en", "tr"],
+        "path": "translations.json",
+        "needConvert": false
+    }
+}

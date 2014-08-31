@@ -1,0 +1,15 @@
+{
+  "name": "meilin-l10n",
+  "version": "0.0.0",
+  "description": "",
+  "main": "l10n.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "meilin-resolve-config": "0.0.0",
+    "log4js": "0.6.19"
+  },
+  "author": "",
+  "license": "BSD-2-Clause"
+}

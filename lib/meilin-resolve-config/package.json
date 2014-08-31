@@ -1,0 +1,14 @@
+{
+  "name": "meilin-resolve-config",
+  "version": "0.0.0",
+  "description": "",
+  "main": "resolve-config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+      "log4js": "0.6.19"
+  },
+  "author": "",
+  "license": "BSD-2-Clause"
+}
