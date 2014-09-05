@@ -1,6 +1,10 @@
 var path = require('path');
 test('configure', function(){
-    l10n.configure('l10n/config.json');
+    l10n.configure({
+        "langs": ["ru", "en", "tr"],
+        "path": "l10n/translations.json",
+        "needConvert": false
+    });
     deepEqual(l10n.getTranslations(), require(path.resolve('l10n/translations.json')), 'configure ok');
 });
 test('convertTranslations', function(){

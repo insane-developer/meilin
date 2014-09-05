@@ -5,7 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "meilin-l10n": "0.0.0",
-    "meilin-resolve-config": "0.0.0",
+    "meilin-config": "0.0.0",
     "qunit": "~0.7.2"
   },
   "devDependencies": {
