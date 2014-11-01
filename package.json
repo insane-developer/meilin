@@ -6,10 +6,14 @@
   "dependencies": {
     "meilin-l10n": "0.0.0",
     "meilin-config": "0.0.0",
-    "qunit": "~0.7.2"
+    "meilin-t": "0.0.0"
   },
   "devDependencies": {
-    "log4js": "0.6.19"
+    "log4js": "0.6.19",
+    "qunit": "~0.7.2",
+    "enb": "0.13.9",
+    "vow": "0.4.7",
+    "vow-fs": "0.3.3"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
