@@ -88,13 +88,13 @@ test('context', function(){
     equal(context.view('nestedChecker2'), '', '[nested viewFunc]no args passed');
     equal(context.view('nestedChecker2', 'ee'), 'ee', '[nested viewFunc]1 arg passed');
     equal(context.view('nestedChecker2', 'bla', 'alb'), 'bla, alb', '[nested viewFunc]2 args passed');
-    /* expect 17 test assertions */
+    /* expect 29 test assertions */
     expect(29);
 });
 test('inheritance', function(){
     /*-- minimal inheritance abilities --*/
     var generator = t.getGeneratorForNamespace('sample'),
-        generator2 = t.getGeneratorForNamespace('2nd sample'),
+        generator2 = t.getGeneratorForNamespace('2nd sample', 'sample'),
         view = generator.getView(),
         view2 = generator2.getView();
     generator('name', 'I am no one');
