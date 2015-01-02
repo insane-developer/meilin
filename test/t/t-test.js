@@ -1,12 +1,12 @@
 test('invocation', function(){
-    var generator = t.getGeneratorForNamespace('sample');
+    var generator = t.getGenerator('sample');
    /*-- minimal invocation abilities --*/
    /* generator is a function */
    generator('greeting', '<i>Hello</i>');
    
    /* views are accessible through module and are not generated on the method invocation */
-   var view = t.getViewForNamespace('sample'),
-   view2 = t.getViewForNamespace('sample');
+   var view = t.getView('sample'),
+   view2 = t.getView('sample');
    equal(view, view2, 'view function should be equal');
    
    /* views invocation returns processed templates */
@@ -21,17 +21,10 @@ test('invocation', function(){
    /* views are accessible through generator function */
    var view3 = generator.getView();
    equal(view, view3, 'view function should be equal');
-   
-   /* Template's namespace can be obtained through module */
-   var ns = t.getNamespace('sample');
-   equal('greeting' in ns, true, 'entity was put in ns');
-   equal(typeof ns.greeting, 'function', 'generated entity is function');
-   equal(ns.greeting(), '<i>Hello</i>', 'template ok');
-   
 });
 test('template', function(){
-    var generator = t.getGeneratorForNamespace('sample');
-    var view = t.getViewForNamespace('sample')
+    var generator = t.getGenerator('sample');
+    var view = t.getView('sample')
     /* -- minimal template abilities -- */
     /* template syntax */
     generator('name', 'I am [% name %]');
@@ -53,8 +46,8 @@ test('template', function(){
 test('context', function(){
     /* -- minimal context preservation abilities -- */
     /* views must preserve context */
-    var generator = t.getGeneratorForNamespace('sample'),
-        view = t.getViewForNamespace('sample'),
+    var generator = t.getGenerator('sample'),
+        view = t.getView('sample'),
         context = {view:view};
     generator('contextChecker', function(){
         equal(this, context, 'Context preserved');
@@ -93,8 +86,8 @@ test('context', function(){
 });
 test('inheritance', function(){
     /*-- minimal inheritance abilities --*/
-    var generator = t.getGeneratorForNamespace('sample'),
-        generator2 = t.getGeneratorForNamespace('2nd sample', 'sample'),
+    var generator = t.getGenerator('sample'),
+        generator2 = t.getGenerator('2nd sample', 'sample'),
         view = generator.getView(),
         view2 = generator2.getView();
     generator('name', 'I am no one');
