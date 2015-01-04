@@ -1,0 +1,16 @@
+{
+  "name": "meilin-enb-bemjson2html",
+  "version": "0.0.0",
+  "description": "",
+  "main": "enb-tech.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "enb": "0.13.9",
+    "vow": "0.4.7",
+    "vow-fs": "0.3.3"
+  }
+}
