@@ -98,3 +98,21 @@ test('inheritance', function(){
     equal(view2('job'), 'To tell anyone, that I am no one', 'Descendant overrided a view');
     expect(3); 
 });
+test('extensions', function(){
+    /*-- minimal extensions abilities --*/
+    var generator = t.getGenerator(),
+        view = generator.getView(),
+        context = {view: view};
+    t.registerExtension('smth', function(params, args){
+        equal(this, context, 'Context preserved');
+        return [params.join(','), Array.prototype.join.call(args, ',')].join(';');
+    });
+    generator('params', '[% smth:Jim:Joe %]');
+    generator('no-params', '[% smth: %]');
+    equal(context.view('params', 'what', 'where'), 'smth,Jim,Joe;what,where', 'Params ok');
+    equal(context.view('no-params', 'what', 'where'), 'smth,;what,where', 'No params ok');
+
+    t.unregisterExtension('smth');
+    equal(context.view('params', 'what', 'where'), '', 'Unregister ok');
+    expect(5);
+});
