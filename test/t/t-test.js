@@ -109,8 +109,8 @@ test('extensions', function(){
     });
     generator('params', '[% smth:Jim:Joe %]');
     generator('no-params', '[% smth: %]');
-    equal(context.view('params', 'what', 'where'), 'smth,Jim,Joe;what,where', 'Params ok');
-    equal(context.view('no-params', 'what', 'where'), 'smth,;what,where', 'No params ok');
+    equal(context.view('params', 'what', 'where'), 'Jim,Joe;what,where', 'Params ok');
+    equal(context.view('no-params', 'what', 'where'), ';what,where', 'No params ok');
 
     t.unregisterExtension('smth');
     equal(context.view('params', 'what', 'where'), '', 'Unregister ok');
