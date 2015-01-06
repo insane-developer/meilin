@@ -115,4 +115,17 @@ test('extensions', function(){
     t.unregisterExtension('smth');
     equal(context.view('params', 'what', 'where'), '', 'Unregister ok');
     expect(5);
+    /*-- advanced extensions abilities --*/
+    t.registerExtension('smth', function(params, args){
+        equal(this, context, 'Context preserved');
+        return [params.join(','), Array.prototype.join.call(args, ',')].join(';');
+    });
+    t.registerExtension('who', function(params, args, view){
+        return view.call(this, 'name', {name: params.join()});
+    });
+    equal(context.view('smth:Jim:Joe', 'what', 'where'), 'Jim,Joe;what,where', '[view call]Params ok');
+    equal(context.view('smth:Jim:Joe'), 'Jim,Joe;', '[view call]args ok');
+    generator('name', 'I am [% name %]');
+    equal(context.view('who:Jim:Joe'), 'I am Jim,Joe', '[view call]view ok');
+    expect(10);
 });
