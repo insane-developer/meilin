@@ -21,19 +21,6 @@ test('configure', function(){
         jsInitClassname: 'i-bem'
     });
 });
-test('_2array', function(){
-    var array0 = [3,5,6],
-        array1 = [],
-        notArrayElems = [true, 42, 'hello', null, undefined];
-    equal(bem._2array(array0), array0, "Array0");
-    equal(bem._2array(array1), array1, "Array0");
-    for(var i = 0, l = notArrayElems.length; i < l; i++){
-        var array = bem._2array(notArrayElems[i]);
-        equal(array.length, 1, 'Not array elem "' + notArrayElems[i] + '" length');
-        equal(array[0], notArrayElems[i], 'Not array elem "' + notArrayElems[i] + '"');
-    }
-    expect(12);
-});
 /**
  * TODO: compare with bemhtml templater
  */
@@ -85,7 +72,8 @@ test('buildBEMClassnames', function(){
         },
         blockWmix1 = {
             block: 'smth-other',
-            mix: blockWmod1
+            mix: blockWmod1,
+            js: true
         },
         incompleteElem = {
             elem: 'hand'
@@ -106,4 +94,73 @@ test('buildBEMClassnames', function(){
     equal(bem.buildBEMClassnames(blockWmix1), 'smth-other smth smth_size_big smth_color_red i-bem', 'blockWmix0');
     equal(bem.buildBEMClassnames(incompleteElem, 'smth'), 'smth__hand', 'incompleteElem');
     equal(bem.buildBEMClassnames(incompleteMix, 'clock'), 'smth clock__arrow', 'incompleteMix');
+});
+
+test('buildBEMEntity', function(){
+    var cases = {
+        'block': { id: 'block' },
+        'block__elem': { id: 'block__elem' },
+        'block_mod_val': { id: 'block', modName: 'mod', modVal: 'val' },
+        'block__elem_mod_val': { id: 'block__elem', modName: 'mod', modVal: 'val' }
+    };
+    for(var id in cases){
+        var q = bem.buildBEMEntity(id),
+            testbem = cases[id];
+        for(var key in testbem){
+            equal(q[key], testbem[key], id + ': ' + key);
+        }
+    }
+});
+var testjson = {
+    block: 'block',
+    mods: {
+        size: 'big'
+    },
+    mix: {
+        block: 'ee',
+        js: true
+    },
+    js: true,
+    content: [
+        {
+            elem: 'tree',
+            content: 'bla'
+        },
+        {
+            elem: 'tree',
+            tag: 'span',
+            mods: {
+                color: 'green'
+            },
+            content: {
+                tag: 'ul',
+                content: [
+                    {
+                        tag: 'li',
+                        content: 1
+                    },
+                    {
+                        tag: 'li',
+                        content: true
+                    },
+                    {
+                        tag: 'li'
+                    }
+                ]
+            }
+        }
+    ]
+};
+test('stringify', function(){
+    var t = bem.getTemplates();
+    equal(bem.stringify(testjson), '<div class="block block_size_big ee i-bem">'+
+        '<div class="block__tree">bla</div>'+
+        '<span class="block__tree block__tree_color_green">'+
+            '<ul>'+
+                '<li>1</li>'+
+                '<li>true</li>'+
+                '<li></li>'+
+            '</ul>'+
+        '</span>'+
+    '</div>', 'ok');
 });
