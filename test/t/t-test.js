@@ -71,7 +71,7 @@ test('context', function(){
     generator('viewArgChecker', function(){
         /* pop view func */ 
         var viewFunc = Array.prototype.pop.call(arguments);
-        equal(viewFunc, view, 'Last arg is the view func');
+        equal(viewFunc.name, 'contextBoundView', 'Last arg is the view func (at least it says so)');
         return Array.prototype.join.call(arguments, ', ');
     });
     equal(context.view('viewArgChecker'), '', '[viewFunc]no args passed');
@@ -83,6 +83,39 @@ test('context', function(){
     equal(context.view('nestedChecker2', 'bla', 'alb'), 'bla, alb', '[nested viewFunc]2 args passed');
     /* expect 29 test assertions */
     expect(29);
+    
+    generator('nestedChecker3', 'we [% go-deeper %]');
+    generator('go-deeper', 'need [% go-far-more-deeper %]');
+    generator('go-far-more-deeper', function(){
+        /* pop view func */ 
+        var viewFunc = Array.prototype.pop.call(arguments);
+        Array.prototype.unshift.call(arguments, 'go-far-more-deeper-x2');
+        return 'to ' + viewFunc.apply(this, arguments);
+    });
+    
+    generator('go-far-more-deeper-x2', function(){
+        /* pop view func */ 
+        var viewFunc = Array.prototype.pop.call(arguments);
+        Array.prototype.unshift.call(arguments, 'viewArgCountChecker');
+        return 'go ' + viewFunc.apply(this, arguments);
+    });
+    generator('viewArgCountChecker', function(){
+        /* pop view func */ 
+        Array.prototype.pop.call(arguments);
+        equal(arguments.length, 2, '[viewArgCountChecker] arguments length');
+        return Array.prototype.join.call(arguments);
+    });
+
+    equal(context.view('nestedChecker3', 42, false), 'we need to go 42,false', 'nestedChecker3');
+    
+    generator('nestedChecker4', function(){
+        /* pop view func */ 
+        var viewFunc = Array.prototype.pop.call(arguments);
+        Array.prototype.unshift.call(arguments, 'contextChecker');
+        return viewFunc.apply(this, arguments);
+    });
+    equal(context.view('nestedChecker4', 'bla', 'alb'), 'bla, alb', '[nested view()]2 args passed');
+    expect(33);
 });
 test('inheritance', function(){
     /*-- minimal inheritance abilities --*/
@@ -96,19 +129,21 @@ test('inheritance', function(){
     equal(view2('name'), 'I am no one', 'Accessing ancestor view');
     equal(view('job'), 'nope', 'Ancestor view left intact');
     equal(view2('job'), 'To tell anyone, that I am no one', 'Descendant overrided a view');
-    expect(3); 
+    expect(3);
 });
 test('extensions', function(){
     /*-- minimal extensions abilities --*/
     var generator = t.getGenerator(),
         view = generator.getView(),
         context = {view: view};
-    t.registerExtension('smth', function(params, args){
-        equal(this, context, 'Context preserved');
-        return [params.join(','), Array.prototype.join.call(args, ',')].join(';');
+    t.registerExtension('smth', {
+        enumerate: function(params, args){
+            equal(this, context, 'Context preserved');
+            return [params.join(','), Array.prototype.join.call(args, ',')].join(';');
+        }
     });
-    generator('params', '[% smth:Jim:Joe %]');
-    generator('no-params', '[% smth: %]');
+    generator('params', '[% smth:enumerate:Jim:Joe %]');
+    generator('no-params', '[% smth:enumerate: %]');
     equal(context.view('params', 'what', 'where'), 'Jim,Joe;what,where', 'Params ok');
     equal(context.view('no-params', 'what', 'where'), ';what,where', 'No params ok');
 
@@ -116,16 +151,18 @@ test('extensions', function(){
     equal(context.view('params', 'what', 'where'), '', 'Unregister ok');
     expect(5);
     /*-- advanced extensions abilities --*/
-    t.registerExtension('smth', function(params, args){
-        equal(this, context, 'Context preserved');
-        return [params.join(','), Array.prototype.join.call(args, ',')].join(';');
+    t.registerExtension('smth', {
+        enumerate: function(params, args){
+            equal(this, context, 'Context preserved');
+            return [params.join(','), Array.prototype.join.call(args, ',')].join(';');
+        },
+        who: function(params, args, view){
+            return view.call(this, 'name', {name: params.join()});
+        }
     });
-    t.registerExtension('who', function(params, args, view){
-        return view.call(this, 'name', {name: params.join()});
-    });
-    equal(context.view('smth:Jim:Joe', 'what', 'where'), 'Jim,Joe;what,where', '[view call]Params ok');
-    equal(context.view('smth:Jim:Joe'), 'Jim,Joe;', '[view call]args ok');
+    equal(context.view('smth:enumerate:Jim:Joe', 'what', 'where'), 'Jim,Joe;what,where', '[view call]Params ok');
+    equal(context.view('smth:enumerate:Jim:Joe'), 'Jim,Joe;', '[view call]args ok');
     generator('name', 'I am [% name %]');
-    equal(context.view('who:Jim:Joe'), 'I am Jim,Joe', '[view call]view ok');
+    equal(context.view('smth:who:Jim:Joe'), 'I am Jim,Joe', '[view call]view ok');
     expect(10);
 });
