@@ -343,20 +343,24 @@ test('stringify', function(){
 });
 
 test('bemjson', function(){
-    var g0 = t.getGenerator('#0'),
-        v0 = g0.getView();
-    g0('block__tree_color_green', '<span class="block__tree block__tree_color_green">'+
-        '<div>some html</div>[% content %]</span>');
-    equal(v0('bemjson', testjson),  '<div class="block block_size_big ee i-bem">'+
+    var gen0 = t.getGenerator('#0'),
+        view0 = gen0.getView();
+
+    /* override template for elem 'tree' with mod 'color'='green' */
+    gen0('block__tree_color_green', '<div class="block__tree block__tree_color_green">'+
+        '<div>some html</div>[% content %]</div>');
+
+    equal(view0('bemjson', testjson),  '<div class="block block_size_big ee i-bem">'+
         '<div class="block__tree">bla</div>'+
-        '<span class="block__tree block__tree_color_green">'+
+        /* should be an html from the template above */
+        '<div class="block__tree block__tree_color_green">'+
             '<div>some html</div>'+
             '<ul>'+
                 '<li>1</li>'+
                 '<li>true</li>'+
                 '<li></li>'+
             '</ul>'+
-        '</span>'+
+        '</div>'+
     '</div>', 'ok');
         
 });
