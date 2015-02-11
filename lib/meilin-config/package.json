@@ -9,6 +9,6 @@
   "dependencies": {
       "log4js": "0.6.19"
   },
-  "author": "",
+  "author": "Andrey Mokrousov (insanedeveloper@ya.ru)",
   "license": "BSD-2-Clause"
 }
