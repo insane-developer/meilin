@@ -362,5 +362,65 @@ test('bemjson', function(){
             '</ul>'+
         '</div>'+
     '</div>', 'ok');
+    
+    gen0('a', function(data){
+        return {
+            tag: 'table',
+            block: 'a',
+            content: data.content
+        };
+    });
+    equal(view0('bemjson', {
+        block: 'a',
+        content: [
+            {
+                elem: 'b',
+                tag: 'tr',
+                content: [
+                    {
+                        tag: 'td',
+                        content: '0'
+                    },
+                    {
+                        tag: 'td',
+                        content: '1'
+                    },
+                    {
+                        tag: 'td',
+                        content: '2'
+                    }
+                ]
+            },
+            {
+                elem: 'c',
+                tag: 'tr',
+                content: [
+                    {
+                        tag: 'td',
+                        content: '0'
+                    },
+                    {
+                        tag: 'td',
+                        content: '1'
+                    },
+                    {
+                        tag: 'td',
+                        content: '2'
+                    }
+                ]
+            }
+        ]
+    }), '<table class="a">'+
+        '<tr class="a__b">'+
+            '<td>0</td>'+
+            '<td>1</td>'+
+            '<td>2</td>'+
+        '</tr>'+
+        '<tr class="a__c">'+
+            '<td>0</td>'+
+            '<td>1</td>'+
+            '<td>2</td>'+
+        '</tr>'+
+    '</table>', 'List items');
         
 });
