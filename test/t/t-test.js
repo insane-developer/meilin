@@ -422,5 +422,29 @@ test('bemjson', function(){
             '<td>2</td>'+
         '</tr>'+
     '</table>', 'List items');
-        
+});
+
+test('namespace separation', function(){
+    var gen0 = t.getGenerator('#0'),
+        gen1 = t.getGenerator('#1'),
+        view0 = gen0.getView(),
+        view1 = gen1.getView();
+    /* simple templates */
+    gen0('uniq', 'i am unique');
+    gen1('qinu', 'i am euqinu');
+
+    gen0('likeall', 'bla bla gen0');
+    gen1('likeall', 'bla bla gen1');
+    
+    equal(view0('uniq'), 'i am unique', '#1');
+    equal(view1('qinu'), 'i am euqinu', '#2');
+    equal(view0('likeall'), 'bla bla gen0', '#3');
+    equal(view1('likeall'), 'bla bla gen1', '#4');
+    
+    /* bem templates */
+    
+    equal(view0('bemjson', { block: 'uniq' }), 'i am unique', 'bem #1');
+    equal(view1('bemjson', { block: 'qinu' }), 'i am euqinu', 'bem #2');
+    equal(view0('bemjson', { block: 'likeall' }), 'bla bla gen0', 'bem #3');
+    equal(view1('bemjson', { block: 'likeall' }), 'bla bla gen1', 'bem #4');
 });
