@@ -329,7 +329,8 @@ var testjson = {
     ]
 };
 test('stringify', function(){
-    var view = t.getView();
+    var gen = t.getGenerator(),
+        view = t.getView();
     equal(view('stringify', testjson), '<div class="block block_size_big ee i-bem">'+
         '<div class="block__tree">bla</div>'+
         '<span class="block__tree block__tree_color_green">'+
@@ -340,6 +341,17 @@ test('stringify', function(){
             '</ul>'+
         '</span>'+
     '</div>', 'ok');
+    
+    gen('document', function(){
+        return [
+            '<!doctype html>',
+            {
+                tag: 'html',
+                content: 'hello'
+            }
+        ];
+    });
+    equal(view('bemjson', {block: 'document'}), '<!doctype html><html>hello</html>', 'array as bemjson in template');
 });
 
 test('bemjson', function(){
@@ -422,6 +434,31 @@ test('bemjson', function(){
             '<td>2</td>'+
         '</tr>'+
     '</table>', 'List items');
+    
+    gen0('me', function(data){
+        return {
+            block: 'me',
+            tag: 'span',
+            content: data.content
+        };
+    });
+    equal(view0('bemjson', {block: 'me', content: 'Q'}), '<span class="me">Q</span>', 'template returns bemjson');
+    
+    gen0('document', function(data){
+        if(data.once){
+            return data;
+        }
+        return [
+            '<!doctype html>',
+            {
+                block: 'document',
+                once: true,
+                tag: 'html',
+                content: 'hello'
+            }
+        ];
+    });
+    equal(view0('bemjson', {block: 'document'}), '<!doctype html><html class="document">hello</html>', 'array as bemjson in template');
 });
 
 test('namespace separation', function(){
