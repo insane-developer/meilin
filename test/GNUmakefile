@@ -7,4 +7,4 @@ TARGETS = l10n config t bem
 all: $(TARGETS)
 
 $(TARGETS):
-	$(QUNIT) -c $@:$(LIBS)/meilin-$@/$@.js -t $@/$@-test.js
+	$(QUNIT) -c $@:$(LIBS)/meilin-$@/$@.js -t $@/*.js
